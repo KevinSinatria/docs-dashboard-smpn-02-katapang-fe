@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dokumentasi CMS Profya - SMPN 2 Katapang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+      }
+
+      :root {
+        --gradient-primary: linear-gradient(to right, #2563eb, #1e40af);
+      }
+
+      .gradient-header {
+        background: linear-gradient(to right, #2563eb, #1e40af);
+      }
+
+      .floating-nav {
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.7);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+      }
+
+      .dark .floating-nav {
+        background: rgba(30, 41, 59, 0.7);
+        border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      }
+
+      .highlight-bar {
+        border-left: 4px solid #2563eb;
+        padding-left: 1rem;
+        background: #dbeafe;
+      }
+
+      .dark .highlight-bar {
+        background: #1e293b;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .slide-in {
+        animation: slideIn 0.7s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .sidebar-link {
+        transition: all 0.2s ease;
+      }
+
+      .sidebar-link:hover {
+        background: rgba(37, 99, 235, 0.1);
+        transform: translateX(4px);
+      }
+
+      .sidebar-link.active {
+        background: rgba(37, 99, 235, 0.15);
+        color: #2563eb;
+        font-weight: 600;
+        border-left: 3px solid #2563eb;
+      }
+
+      .dark .sidebar-link.active {
+        color: #3b82f6;
+        border-left-color: #3b82f6;
+      }
+
+      .card {
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .dark .card {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn {
+        border-radius: 9999px;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .btn:hover {
+        transform: scale(1.05);
+      }
+
+      .section-img {
+        border-radius: 1rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        max-width: 80%;
+        margin: 2rem auto;
+      }
+
+      .dark .section-img {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+
+      .dark ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+
+      .dark ::-webkit-scrollbar-thumb {
+        background: #475569;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .search-highlight {
+        background-color: #fef08a;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+
+      .dark .search-highlight {
+        background-color: #854d0e;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+      }
+
+      .faq-item {
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .faq-item:hover {
+        background: rgba(37, 99, 235, 0.05);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-answer.open {
+        max-height: 500px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+  >
+    <!-- Header -->
+    <header class="floating-nav fixed top-0 left-0 right-0 z-50">
+      <div
+        class="container mx-auto px-4 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <button
+            id="hamburger"
+            class="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-bold text-sm"
+            >
+              P
+            </div>
+            <span class="font-semibold text-lg hidden sm:block"
+              >Dokumentasi CMS SMPN 2 Katapang</span
+            >
+            <span class="font-semibold text-lg sm:hidden"
+              >Dokumentasi CMS Dukat</span
+            >
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="relative hidden sm:block">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Cari topik dokumentasi..."
+              class="px-4 py-2 pr-10 rounded-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-64"
+            />
+            <svg
+              class="w-5 h-5 absolute right-3 top-2.5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+          </div>
+
+          <button
+            id="darkModeToggle"
+            class="p-2 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+          >
+            <svg
+              class="w-5 h-5 hidden dark:block"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+              ></path>
+            </svg>
+            <svg
+              class="w-5 h-5 block dark:hidden"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="sidebar fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto z-40 md:translate-x-0"
+    >
+      <nav class="p-6">
+        <ul class="space-y-1">
+          <li>
+            <a
+              href="#/pendahuluan"
+              class="sidebar-link block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300"
+              data-route="pendahuluan"
+            >
+              Pendahuluan
+            </a>
+          </li>
+          <li>
+            <a
+              href="#/akses-role"
+              class="sidebar-link block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300"
+              data-route="akses-role"
+            >
+              Akses & Role
+            </a>
+          </li>
+          <li>
+            <a
+              href="#/fitur-utama"
+              class="sidebar-link block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300"
+              data-route="fitur-utama"
+            >
+              Fitur Utama
+            </a>
+          </li>
+          <li>
+            <a
+              href="#/alur-penggunaan"
+              class="sidebar-link block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300"
+              data-route="alur-penggunaan"
+            >
+              Alur Penggunaan
+            </a>
+          </li>
+          <li>
+            <a
+              href="#/faq"
+              class="sidebar-link block px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300"
+              data-route="faq"
+            >
+              FAQ
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="md:ml-64 mt-16 min-h-screen">
+      <div class="max-w-4xl mx-auto px-6 py-12">
+        <div id="contentArea" class="fade-in">
+          <!-- Content will be injected here -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button
+      id="backToTop"
+      class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all opacity-0 pointer-events-none"
+    >
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 10l7-7m0 0l7 7m-7-7v18"
+        ></path>
+      </svg>
+    </button>
+
+    <!-- Footer -->
+    <footer
+      class="md:ml-64 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 py-6"
+    >
+      <div
+        class="max-w-4xl mx-auto px-6 text-center text-gray-600 dark:text-gray-400 text-sm"
+      >
+        <p>
+          &copy; 2025 CMS Dashboard - SMPN 2 Katapang. Dokumentasi ini dibuat
+          untuk memudahkan pengelolaan sistem.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Content Data
+      const contentData = {
+        pendahuluan: {
+          title: "Pendahuluan",
+          sections: [
+            {
+              heading: "Tentang CMS Dashboard SMPN 2 Katapang",
+              text: "CMS Dashboard ini adalah sistem manajemen konten sekolah berbasis web untuk SMPN 2 Katapang. Dirancang agar admin dan humas dapat mengelola informasi sekolah seperti artikel, galeri, agenda, dan profil sekolah tanpa kesulitan teknis.",
+            },
+            {
+              heading: "Tujuan dan Konsep",
+              text: "Meningkatkan efisiensi pengelolaan data sekolah melalui antarmuka yang intuitif dan terintegrasi. CMS ini mengedepankan prinsip reusable component dan modular data structure.",
+              highlight: true,
+            },
+            {
+              heading: "Teknologi",
+              text: "Backend menggunakan Express.js, Prisma ORM, dan Next.js untuk frontend utama. Dokumentasi ini sepenuhnya statis dengan TailwindCSS via CDN dan JavaScript murni.",
+            },
+          ],
+        },
+        "akses-role": {
+          title: "Akses & Role",
+          sections: [
+            {
+              heading: "Admin",
+              text: "Memiliki akses penuh untuk seluruh modul termasuk akun, personil, kepala sekolah, artikel, dan statistik sekolah.",
+              highlight: true,
+            },
+            {
+              heading: "Humas",
+              text: "Mengelola konten dinamis seperti artikel, agenda, dan galeri. Tidak memiliki akses terhadap data internal seperti personil dan akun.",
+              highlight: true,
+            },
+            {
+              heading: "Perbandingan Hak Akses",
+              text: "Berikut adalah tabel perbandingan hak akses antara Admin dan Humas:",
+              table: `
+                            <div class="overflow-x-auto my-6">
+                                <table class="min-w-full bg-white dark:bg-slate-800 rounded-lg overflow-hidden">
+                                    <thead class="bg-blue-600 text-white">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-sm font-semibold">Fitur</th>
+                                            <th class="px-6 py-3 text-center text-sm font-semibold">Admin</th>
+                                            <th class="px-6 py-3 text-center text-sm font-semibold">Humas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
+                                        <tr>
+                                            <td class="px-6 py-4 text-sm">Dashboard</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                        </tr>
+                                        <tr class="bg-gray-50 dark:bg-slate-900">
+                                            <td class="px-6 py-4 text-sm">Personil</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">❌</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 text-sm">Kepala Sekolah</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">❌</td>
+                                        </tr>
+                                        <tr class="bg-gray-50 dark:bg-slate-900">
+                                            <td class="px-6 py-4 text-sm">Akun</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">❌</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 text-sm">Artikel</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                        </tr>
+                                        <tr class="bg-gray-50 dark:bg-slate-900">
+                                            <td class="px-6 py-4 text-sm">Galeri</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 text-sm">Agenda</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                        </tr>
+                                        <tr class="bg-gray-50 dark:bg-slate-900">
+                                            <td class="px-6 py-4 text-sm">Statistik Sekolah</td>
+                                            <td class="px-6 py-4 text-center">✅</td>
+                                            <td class="px-6 py-4 text-center">❌</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        `,
+            },
+          ],
+        },
+        "fitur-utama": {
+          title: "Fitur Utama",
+          sections: [
+            {
+              heading: "Dashboard",
+              text: "Menampilkan statistik umum sekolah (artikel, guru, siswa, kepala sekolah aktif). Dashboard memberikan gambaran cepat tentang kondisi terkini sistem dan data sekolah.",
+            },
+            {
+              heading: "Roles",
+              text: "Mengatur daftar peran pengguna dan hak akses terkait. Sistem role-based access control (RBAC) memastikan setiap pengguna hanya dapat mengakses fitur sesuai kewenangannya.",
+            },
+            {
+              heading: "Personil",
+              text: "Data pegawai sekolah yang terhubung dengan akun login. Mencakup informasi lengkap tentang guru, staf, dan karyawan sekolah dengan status aktif atau non-aktif.",
+            },
+            {
+              heading: "Kepala Sekolah",
+              text: "Menetapkan personil sebagai kepala sekolah aktif, beserta periode jabatan dan sambutan. Fitur ini memungkinkan pengelolaan historis kepemimpinan sekolah.",
+            },
+            {
+              heading: "Akun",
+              text: "Membuat akun login yang terhubung ke personil tertentu. Setiap akun memiliki username unik dan password yang terenkripsi untuk keamanan.",
+            },
+            {
+              heading: "Album Galeri",
+              text: "Buat album foto dan unggah maksimal 20 foto per album. Galeri mendukung berbagai format gambar dan otomatis mengoptimalkan ukuran file untuk performa web.",
+            },
+            {
+              heading: "Artikel",
+              text: "Menulis artikel dengan Editor.js dan menentukan kategori serta status publikasi. Editor.js menyediakan berbagai blok konten seperti paragraf, heading, list, quote, dan embed media.",
+              highlight: true,
+            },
+            {
+              heading: "Informasi Sekolah",
+              text: "Menentukan kontak, alamat, dan visi-misi sekolah menggunakan markdown editor. Informasi ini akan ditampilkan di halaman profil sekolah pada website publik.",
+            },
+            {
+              heading: "Agenda Sekolah",
+              text: "Membuat dan mengedit agenda kalender dengan antarmuka interaktif. Setiap agenda dapat memiliki tanggal mulai, tanggal selesai, deskripsi, dan kategori kegiatan.",
+            },
+            {
+              heading: "Statistik Sekolah",
+              text: "Menambah data statistik seperti jumlah siswa dan guru per tahun. Data statistik ini dapat ditampilkan dalam bentuk grafik di website publik untuk transparansi informasi.",
+            },
+          ],
+        },
+        "alur-penggunaan": {
+          title: "Alur Penggunaan",
+          sections: [
+            {
+              heading: "1. Membuat Personil",
+              text: "Langkah pertama adalah menambahkan data personil. Isi nama lengkap, jabatan, dan tentukan status aktif. Personil yang dibuat akan menjadi dasar untuk pembuatan akun login dan penetapan kepala sekolah.",
+            },
+            {
+              heading: "2. Menambah Role",
+              text: "Tambahkan role seperti Admin, Humas, atau Guru sesuai kebutuhan organisasi. Setiap role memiliki hak akses yang berbeda terhadap modul-modul dalam sistem.",
+            },
+            {
+              heading: "3. Assign Role",
+              text: "Hubungkan personil dengan role tertentu agar mereka memiliki akses sesuai jabatan. Satu personil dapat memiliki satu atau lebih role tergantung tanggung jawab.",
+            },
+            {
+              heading: "4. Membuat Kepala Sekolah",
+              text: "Pilih personil sebagai kepala sekolah dan tambahkan sambutan resmi. Anda juga perlu menentukan periode jabatan (tahun mulai dan tahun selesai).",
+            },
+            {
+              heading: "5. Membuat Akun Login",
+              text: "Hubungkan akun dengan personil agar dapat login ke sistem. Pastikan username unik dan password cukup kuat untuk keamanan.",
+            },
+            {
+              heading: "6. Membuat Album Galeri",
+              text: "Buat album baru dengan nama dan deskripsi yang jelas. Upload foto dokumentasi sekolah seperti kegiatan belajar mengajar, acara, atau fasilitas (maksimal 20 foto per album).",
+            },
+            {
+              heading: "7. Membuat Artikel",
+              text: "Isi konten artikel yang mendukung berbagai jenis blok konten. Pilih kategori artikel, upload thumbnail, dan tentukan status publikasi (draft atau published).",
+            },
+            {
+              heading: "8. Mengelola Informasi Sekolah",
+              text: 'Isi kontak sekolah (telepon, email, alamat), visi misi menggunakan markdown editor. Informasi ini akan ditampilkan di halaman "Tentang Kami" pada website publik.',
+            },
+            {
+              heading: "9. Menambahkan Agenda",
+              text: "Tambahkan kegiatan ke kalender digital dengan menentukan tanggal, waktu, judul, dan deskripsi kegiatan. Agenda akan muncul di halaman publik dan membantu transparansi kegiatan sekolah.",
+            },
+            {
+              heading: "10. Statistik Sekolah",
+              text: "Input data statistik tahunan sekolah seperti jumlah siswa, jumlah guru, dan prestasi. Data ini dapat divisualisasikan dalam bentuk chart untuk memudahkan analisis tren.",
+            },
+          ],
+        },
+        faq: {
+          title: "FAQ (Frequently Asked Questions)",
+          faqs: [
+            {
+              q: "Apakah CMS ini bisa diakses dari HP?",
+              a: "Ya, seluruh halaman responsif dan dapat diakses dengan nyaman di semua ukuran layar termasuk smartphone dan tablet.",
+            },
+            {
+              q: "Apakah Humas bisa mengubah data personil?",
+              a: "Tidak. Akses untuk mengelola data personil hanya dimiliki oleh Admin. Humas fokus pada pengelolaan konten publik seperti artikel, galeri, dan agenda.",
+            },
+            {
+              q: "Apakah artikel wajib memiliki thumbnail?",
+              a: "Ya, thumbnail wajib karena digunakan sebagai gambar preview di halaman daftar artikel pada website publik. Pastikan thumbnail memiliki rasio aspek yang baik (disarankan 16:9).",
+            },
+            {
+              q: "Apakah sistem bisa dikembangkan lebih lanjut?",
+              a: "Ya, CMS ini bersifat modular dan mudah dikembangkan. Backend menggunakan Express.js dan Prisma ORM yang fleksibel untuk penambahan fitur baru.",
+            },
+            {
+              q: "Bagaimana cara mengganti password akun?",
+              a: "Password sangat krusial dan sangat penting untuk di ingat dan dicatat. Namun, apabila sudah lupa password, Anda dapat menghubungi admin/pengelola website nya untuk mengubah password di database secara manual (Hubungi ahli).",
+            },
+            {
+              q: "Apakah artikel bisa dijadwalkan publikasi?",
+              a: "Saat ini fitur penjadwalan otomatis belum tersedia. Namun, Anda dapat menyimpan artikel sebagai draft dan mempublikasikannya secara manual di waktu yang diinginkan.",
+            },
+          ],
+        },
+      };
+
+      // Render Content
+      function renderContent(route) {
+        const content = contentData[route];
+        const contentArea = document.getElementById("contentArea");
+
+        if (!content) {
+          contentArea.innerHTML = "<p>Konten tidak ditemukan</p>";
+          return;
+        }
+
+        let html = `<div class="slide-in"><h1 class="text-4xl font-bold mb-8 gradient-header bg-clip-text text-transparent">${content.title}</h1>`;
+
+        if (content.sections) {
+          content.sections.forEach((section, index) => {
+            html += `<section class="mb-12 card bg-white dark:bg-slate-800 p-8">`;
+            html += `<h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">${section.heading}</h2>`;
+
+            if (section.highlight) {
+              html += `<div class="highlight-bar p-4 rounded-lg mb-4">`;
+              html += `<p class="text-gray-700 dark:text-gray-300 leading-relaxed">${section.text}</p>`;
+              html += `</div>`;
+            } else {
+              html += `<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">${section.text}</p>`;
+            }
+
+            if (section.table) {
+              html += section.table;
+            }
+
+            if (section.image) {
+              html += `<div class="text-center my-6">`;
+              html += `<img src="${section.image}" alt="${section.heading}" class="section-img inline-block" onerror="this.style.display='none'" />`;
+              html += `<p class="text-sm text-gray-500 dark:text-gray-400 italic mt-2">Gambar: ${section.heading}</p>`;
+              html += `</div>`;
+            }
+
+            html += `</section>`;
+          });
+        }
+
+        if (content.faqs) {
+          content.faqs.forEach((faq, index) => {
+            html += `
+                        <div class="faq-item card bg-white dark:bg-slate-800 p-6 mb-4 rounded-lg" data-faq-index="${index}">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex-1">${faq.q}</h3>
+                                <svg class="w-5 h-5 text-gray-500 transform transition-transform faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                            <div class="faq-answer mt-4">
+                                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${faq.a}</p>
+                            </div>
+                        </div>
+                    `;
+          });
+        }
+
+        html += `</div>`;
+        contentArea.innerHTML = html;
+
+        // Add FAQ toggle functionality
+        document.querySelectorAll(".faq-item").forEach((item) => {
+          item.addEventListener("click", function () {
+            const answer = this.querySelector(".faq-answer");
+            const icon = this.querySelector(".faq-icon");
+
+            if (answer.classList.contains("open")) {
+              answer.classList.remove("open");
+              icon.style.transform = "rotate(0deg)";
+            } else {
+              document
+                .querySelectorAll(".faq-answer")
+                .forEach((a) => a.classList.remove("open"));
+              document
+                .querySelectorAll(".faq-icon")
+                .forEach((i) => (i.style.transform = "rotate(0deg)"));
+              answer.classList.add("open");
+              icon.style.transform = "rotate(180deg)";
+            }
+          });
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Router
+      function router() {
+        const hash = window.location.hash.slice(2) || "pendahuluan";
+        renderContent(hash);
+
+        // Update active sidebar link
+        document.querySelectorAll(".sidebar-link").forEach((link) => {
+          link.classList.remove("active");
+          if (link.dataset.route === hash) {
+            link.classList.add("active");
+          }
+        });
+      }
+
+      // Dark Mode Toggle
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const html = document.documentElement;
+
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        html.classList.add("dark");
+      } else {
+        html.classList.remove("dark");
+      }
+
+      darkModeToggle.addEventListener("click", () => {
+        html.classList.toggle("dark");
+        localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
+      });
+
+      // Hamburger Menu
+      const hamburger = document.getElementById("hamburger");
+      const sidebar = document.getElementById("sidebar");
+
+      hamburger.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+      });
+
+      // Close sidebar on link click (mobile)
+      document.querySelectorAll(".sidebar-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth < 768) {
+            sidebar.classList.remove("open");
+          }
+        });
+      });
+
+      // Back to Top Button
+      const backToTop = document.getElementById("backToTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.pageYOffset > 300) {
+          backToTop.style.opacity = "1";
+          backToTop.style.pointerEvents = "auto";
+        } else {
+          backToTop.style.opacity = "0";
+          backToTop.style.pointerEvents = "none";
+        }
+      });
+
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // Search Functionality
+      const searchInput = document.getElementById("searchInput");
+      let searchTimeout;
+
+      searchInput.addEventListener("input", (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          const query = e.target.value.toLowerCase();
+          if (query.length < 2) return;
+
+          // Simple search through content
+          Object.keys(contentData).forEach((key) => {
+            const content = contentData[key];
+            if (content.title.toLowerCase().includes(query)) {
+              window.location.hash = "#/" + key;
+            } else if (content.sections) {
+              content.sections.forEach((section) => {
+                if (
+                  section.heading.toLowerCase().includes(query) ||
+                  section.text.toLowerCase().includes(query)
+                ) {
+                  window.location.hash = "#/" + key;
+                }
+              });
+            }
+          });
+        }, 300);
+      });
+
+      // Keyboard Shortcuts
+      document.addEventListener("keydown", (e) => {
+        // Ctrl + D: Toggle Dark Mode
+        if ((e.ctrlKey || e.metaKey) && e.key === "d") {
+          e.preventDefault();
+          darkModeToggle.click();
+        }
+
+        // /: Focus Search
+        if (
+          e.key === "/" &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          document.activeElement !== searchInput
+        ) {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+
+      // Initialize
+      window.addEventListener("hashchange", router);
+      window.addEventListener("load", router);
+    </script>
+  </body>
+</html>
